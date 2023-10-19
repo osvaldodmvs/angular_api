@@ -38,7 +38,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Email: userData.Email, Password: string(hashedPassword)}
+	user := models.User{Email: userData.Email, Password: string(hashedPassword), Balance: float64(0)}
 	result := initializers.DB.Create(&user)
 
 	if result.Error != nil {
@@ -113,7 +113,9 @@ func Login(c *gin.Context) {
 }
 
 func Home(c *gin.Context) {
-	//
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Server is running",
+	})
 }
 
 /*testing only

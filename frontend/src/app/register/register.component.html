@@ -1,1 +1,13 @@
-<p>register works!</p>
+<div class="container vertical">
+	<form class="container vertical" #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)">
+		<h2>Registration</h2>
+		<mat-form-field class="full-width">
+			<input matInput placeholder="Email" type="email" name="email" ngModel required>
+		</mat-form-field>
+		
+		<mat-form-field class="full-width">
+			<input matInput placeholder="Password" type="password" name="password" ngModel required>
+		</mat-form-field>
+		<button mat-raised-button color="primary" type="submit">Register</button>
+	</form>
+</div>

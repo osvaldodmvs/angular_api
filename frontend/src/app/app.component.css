@@ -1,6 +1,3 @@
-.container {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 80vh; /* Optional: Set the container height to the viewport height for full-screen centering */
-  }
+.spacer{
+  flex:1;
+}
