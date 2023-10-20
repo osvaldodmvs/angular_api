@@ -17,14 +17,15 @@ func main() {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
+	config.AllowOrigins = []string{"http://localhost:4200"}
+	config.AllowCredentials = true
+	config.AddAllowHeaders("Authorization")
 	r.Use(cors.New(config))
 
-	r.GET("/", controllers.Home)
-	r.GET("/api/signup", controllers.SignUpPage)
 	r.POST("/api/signup", controllers.SignUp)
-	r.GET("/api/login", controllers.LoginPage)
 	r.POST("/api/login", controllers.Login)
-
+	r.POST("/api/logout", controllers.Logout)
+	r.POST("/api/operation", controllers.Operation)
+	r.GET("/api/movements", controllers.Movements)
 	r.Run()
 }
