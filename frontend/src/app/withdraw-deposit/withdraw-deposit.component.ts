@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
 	selector: 'app-withdraw-deposit',
@@ -18,7 +19,7 @@ export class WithdrawDepositComponent {
     withCredentials: true,
   };
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private snackbarService: SnackbarService) {}
 
   onSubmit(form: any): void {
     if (form.valid) {
@@ -30,10 +31,12 @@ export class WithdrawDepositComponent {
       this.http.post(this.deposit_withdrawal_url, userData).pipe(
         tap((response) => {
           console.log(userData.operation === 'withdraw' ? 'Withdrawal successful:' : 'Deposit successful:', response);
-          this.router.navigate(['/']);
+          this.router.navigate(['/movements']);
+          this.snackbarService.showMessage(userData.operation === 'withdraw' ? 'Withdrawal successful' : 'Deposit successful');
         }),
         catchError((error) => {
           console.log(userData.operation === 'withdraw' ? 'Withdrawal failed:' : 'Deposit failed:', error);
+          this.snackbarService.showMessage(userData.operation === 'withdraw' ? 'Withdrawal failed' : 'Deposit failed');
           return of(error);
         })
       ).subscribe();

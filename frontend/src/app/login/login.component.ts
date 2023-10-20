@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
 	selector: 'app-login',
@@ -13,13 +14,10 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-	constructor(private http: HttpClient,private router: Router,private authService: AuthenticationService) {}
+	constructor(private http: HttpClient,private router: Router,private authService: AuthenticationService, private snackbarService: SnackbarService) {}
 
-	isLoggedIn:boolean = false;
 	login_url:string = environment.backendhost+':'+environment.backendport+'/api/login';
-	logout_url:string = environment.backendhost+':'+environment.backendport+'/api/logout';
 
-	
 
 	onSubmit(form: any): void {
 		if (form.valid) {
@@ -32,34 +30,18 @@ export class LoginComponent {
 				console.log('Login successful:', response);
 				this.authService.setIsLoggedIn(true);
 				this.router.navigate(['/']);
+				this.snackbarService.showMessage('Login successful');
 			}),
 			catchError((error) => {
+				this.snackbarService.showMessage('Login failed');
 				console.error('Login failed:', error);
 				return of(error);
 			})
 			).subscribe();
 		} else {
+			this.snackbarService.showMessage('Form is invalid. Please correct the errors.');
 			console.log('Form is invalid. Please correct the errors.');
 		}
-	}
-
-	logout(): void {
-		this.http.post(this.logout_url, {}).pipe(
-			tap((response) => {
-				console.log('Logout successful:', response);
-				this.authService.setIsLoggedIn(false);
-				this.router.navigate(['/']);
-			}),
-			catchError((error) => {
-				console.error('Logout failed:', error);
-				return of(error);
-			})
-			).subscribe();
-		this.isLoggedIn = false;
-	}
-
-	isLoggedin(): boolean {
-		return this.isLoggedIn;
 	}
 	
 }

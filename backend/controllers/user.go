@@ -158,12 +158,19 @@ func Operation(c *gin.Context) {
 		return
 	}
 
-	//we already have the user
+	if movementData.Amount <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid amount"})
+		return
+	}
 
 	if movementData.Operation == "deposit" {
 		existingUser.Balance += movementData.Amount
 	} else if movementData.Operation == "withdraw" {
 		existingUser.Balance -= movementData.Amount
+		if existingUser.Balance < 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Insufficient funds"})
+			return
+		}
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid operation"})
 		return

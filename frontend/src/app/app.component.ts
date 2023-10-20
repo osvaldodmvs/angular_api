@@ -14,9 +14,9 @@ export class AppComponent {
   isUserLoggedIn(){
     return this.authService.getIsLoggedIn();
   }
-  
-  triggerLogout() {
-    this.authService.logout(); // Call the logout function from your AuthenticationService
+
+  triggerLogout(){
+    this.authService.logout();
   }
 
 }

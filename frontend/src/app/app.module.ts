@@ -25,6 +25,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 
 const MaterialComponents = [
 	MatButtonModule,
@@ -37,6 +39,7 @@ const MaterialComponents = [
 	MatDividerModule,
 	MatIconModule,
 	MatTableModule,
+	MatSnackBarModule,
 ];
 @NgModule({
 	declarations: [

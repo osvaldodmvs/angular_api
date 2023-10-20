@@ -12,7 +12,7 @@ export class HttpLoggingInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler
   ): Observable<HttpEvent<any>> {
     req = req.clone({
-      withCredentials: true, // Send cookies with the request
+      withCredentials: true, //send cookies with request, CORS is always difficult to deal with
     });
 
     console.log('Request URL:', req.url);

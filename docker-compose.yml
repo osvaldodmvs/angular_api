@@ -1,0 +1,43 @@
+version: '3'
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: angular_api
+    ports:
+      - '5432:5432'
+    networks:
+      - app-network
+
+  go-backend:
+    build:
+      context: ./backend
+    ports:
+      - '6060:6060'
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: angular_api
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  angular-app:
+    build:
+      context: ./frontend
+    ports:
+      - '80:80'
+    depends_on:
+      - go-backend
+    networks:
+      - app-network
