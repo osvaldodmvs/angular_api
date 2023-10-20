@@ -1,9 +1,13 @@
 <mat-toolbar color="primary">
     <button mat-button routerLink="/">Home</button>
     <div class="spacer"></div>
-    <div class="navbar-buttons">
+    <ng-container *ngIf="isUserLoggedIn(); else loginButtons">
+        <button mat-button routerLink="/operations">Operations</button>
+        <button mat-button (click)="triggerLogout()">Logout</button>
+    </ng-container>
+    <ng-template #loginButtons>
         <button mat-button routerLink="/login">Login</button>
         <button mat-button routerLink="/register">Register</button>
-    </div>
+    </ng-template>
 </mat-toolbar>
 <router-outlet></router-outlet>

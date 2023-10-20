@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from '../services/authentication.service';
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { environment } from '../../environments/environment.development';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -9,34 +12,54 @@ import { of } from 'rxjs';
 	styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-	constructor(private http: HttpClient) {}
+
+	constructor(private http: HttpClient,private router: Router,private authService: AuthenticationService) {}
+
+	isLoggedIn:boolean = false;
+	login_url:string = environment.backendhost+':'+environment.backendport+'/api/login';
+	logout_url:string = environment.backendhost+':'+environment.backendport+'/api/logout';
+
 	
+
 	onSubmit(form: any): void {
 		if (form.valid) {
-			// Form is valid, perform login actions
 			const userData = {
 				email: form.value.email,
 				password: form.value.password
 			};
-			
-			// Send a POST request to the backend login endpoint
-			this.http.post('http://localhost:6060/api/login', userData).pipe(
+						this.http.post(this.login_url, userData).pipe(
 			tap((response) => {
-				// Login successful, handle the response (e.g., store tokens, redirect)
 				console.log('Login successful:', response);
-				// You can perform actions like redirecting the user, storing tokens, etc.
+				this.authService.setIsLoggedIn(true);
+				this.router.navigate(['/']);
 			}),
 			catchError((error) => {
-				// Login failed, handle the error
 				console.error('Login failed:', error);
-				// Show error message to the user 
 				return of(error);
 			})
 			).subscribe();
 		} else {
-			// Form is invalid, show validation errors
 			console.log('Form is invalid. Please correct the errors.');
 		}
+	}
+
+	logout(): void {
+		this.http.post(this.logout_url, {}).pipe(
+			tap((response) => {
+				console.log('Logout successful:', response);
+				this.authService.setIsLoggedIn(false);
+				this.router.navigate(['/']);
+			}),
+			catchError((error) => {
+				console.error('Logout failed:', error);
+				return of(error);
+			})
+			).subscribe();
+		this.isLoggedIn = false;
+	}
+
+	isLoggedin(): boolean {
+		return this.isLoggedIn;
 	}
 	
 }

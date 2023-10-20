@@ -1,0 +1,11 @@
+.simple-padding{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.total-balance-card {
+    display: flex;
+    justify-content: center;
+    margin: 16px;
+    padding: 10px;
+  }

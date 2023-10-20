@@ -1,0 +1,16 @@
+<div class="container vertical">
+    <form class="container vertical" #operationForm="ngForm" (ngSubmit)="onSubmit(operationForm)">
+      <h2>What operation would you like to perform?</h2>
+      <mat-form-field class="full-width">
+        <mat-select placeholder="Operation" name="operation" ngModel required>
+          <mat-option value="deposit">Deposit</mat-option>
+          <mat-option value="withdraw">Withdraw</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Amount" type="number" name="amount" min="5" ngModel required>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </form>
+  </div>
+  
